@@ -1,25 +1,31 @@
-from abc import ABC, abstractmethod
+class SavingsAccount(BankAccount):
+    def __init__(self, account_number, account_name, balance=0):
+        super().__init__(account_number, account_name, balance)
 
-class BankAccount(ABC):
-    def _init_(self, account_number, account_name, balance=0):
-        self._account_number = account_number
-        self._account_name = account_name
-        self._balance = balance
-
-    @abstractmethod
     def deposit(self, amount):
-        pass
-
-    @abstractmethod
-    def withdraw(self, amount):
-        pass
-
-    def get_balance(self):
+        self._balance += amount
+        interest = 0.005 * amount
+        self._balance += interest
         return self._balance
 
-    def get_account_info(self):
-        return {
-            'account_number': self._account_number,
-            'account_name': self._account_name,
-            'balance': self._balance
-        }
+    def withdraw(self, amount):
+        if amount <= 700000 and amount <= self._balance:
+            self._balance -= amount
+            return self._balance
+        else:
+            return "Withdrawal limit exceeded or insufficient balance"
+
+class CurrentAccount(BankAccount):
+    def __init__(self, account_number, account_name, balance=0):
+        super().__init__(account_number, account_name, balance)
+
+    def deposit(self, amount):
+        self._balance += amount
+        return self._balance
+
+    def withdraw(self, amount):
+        if amount <= self._balance:
+            self._balance -= amount
+            return self._balance
+        else:
+            return "Insufficient balance"
